@@ -10,6 +10,13 @@ const secretKey = 'eXA0eZbDKHkVMZUx4Tijoj6rVxeZgC-F0HvGkKqE2OE'
 const url = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
 
 
+// Helper funtion to set attributes on DOM elements
+const setAttributes = (element, attributes) => {
+    for(const key in attributes) {
+        element.setAttribute(key, attributes[key]);
+    }
+};
+
 // Get photos from Unsplash API
 async function getPhotos() {
     try {
@@ -27,20 +34,28 @@ function displayPhotos() {
     photosArray.forEach(photo => {
         // Create a link tag
         const link = document.createElement('a');
-        link.setAttribute('href', photo.links.html);
-        link.setAttribute('target', '_blank');
+        setAttributes(link, {
+            href: photo.links.html,
+            target: '_blank'
+        });
 
         // Create img tag
         const img = document.createElement('img');
-        img.setAttribute('src', photo.urls.regular);
-        img.setAttribute('alt', photo.alt_description);
-        img.setAttribute('title', photo.alt_description);
+        setAttributes(img, {
+            src: photo.urls.regular,
+            alt: photo.alt_description,
+            title: photo.alt_description,
+        });
 
         //Put img inside a tag and then put a inside container
         link.appendChild(img);
         container.appendChild(link);
     });
 }
+
+window.addEventListener('scroll', () => {
+    console.log('Scrolled');
+})
 
 getPhotos();
 
